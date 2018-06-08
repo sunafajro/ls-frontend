@@ -10,6 +10,16 @@ import "bootstrap/dist/css/bootstrap.css";
 
 Vue.config.productionTip = false;
 
+router.beforeEach((to, from, next) => {
+  if (store.getters.isGuest && to.path !== "/login") {
+    next("/login");
+  }
+  if (!store.getters.isGuest && to.path === "/login") {
+    next("/");
+  }
+  next();
+});
+
 new Vue({
   router,
   store,
