@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav-component :notify="notify"/>
+    <nav-component v-if="!isGuest" :notify="notify"/>
     <router-view :notify="notify" />
   </div>
 </template>
@@ -12,6 +12,11 @@ export default {
     notify: {
       type: Function,
       required: true
+    }
+  },
+  computed: {
+    isGuest() {
+      return this.$store.getters.isGuest;
     }
   },
   components: {
