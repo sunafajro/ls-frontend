@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Noty from "noty";
+import { mapActions } from "vuex";
 import App from "./App.vue";
+import Loading from "./components/Loading.vue";
 import router from "./router";
 import store from "./store";
 import "font-awesome/css/font-awesome.css";
@@ -11,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.css";
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
+  console.log(store.getters.isGuest);
   if (store.getters.isGuest && to.path !== "/login") {
     next("/login");
   }
@@ -21,9 +24,18 @@ router.beforeEach((to, from, next) => {
 });
 
 new Vue({
+  computed: {
+    isLoaded() {
+      return this.$store.getters.isLoaded;
+    }
+  },
+  created() {
+    this.getUserState();
+  },
   router,
   store,
   methods: {
+    ...mapActions(["getUserState"]),
     notify(type, text) {
       new Noty({
         theme: "bootstrap-v4",
@@ -35,10 +47,14 @@ new Vue({
     }
   },
   render(h) {
-    return h(App, {
-      props: {
-        notify: this.notify
-      }
-    });
+    if (this.isLoaded) {
+      return h(App, {
+        props: {
+          notify: this.notify
+        }
+      });
+    } else {
+      return h(Loading);
+    }
   }
 }).$mount("#app");

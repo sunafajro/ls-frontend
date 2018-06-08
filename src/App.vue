@@ -7,6 +7,7 @@
 
 <script>
 import Navigation from "./components/NavBar/Navigation";
+
 export default {
   props: {
     notify: {
