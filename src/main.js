@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Noty from "noty";
 import { mapActions } from "vuex";
-import BootstrapVue from "bootstrap-vue";
 import App from "./App.vue";
 import Loading from "./components/Loading.vue";
 import router from "./router";
@@ -13,7 +12,6 @@ import "noty/lib/noty.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
-Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {

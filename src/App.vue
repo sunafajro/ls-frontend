@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import bContainer from "bootstrap-vue/es/components/layout/container";
 import Navigation from "./components/NavBar/Navigation";
 
 export default {
@@ -23,6 +24,7 @@ export default {
     }
   },
   components: {
+    "b-container": bContainer,
     "nav-component": Navigation
   }
 };

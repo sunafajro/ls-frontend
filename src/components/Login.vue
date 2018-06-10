@@ -1,38 +1,57 @@
 <template>
   <div>
     <b-row align-h="center">
-      <!--<div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">-->
-      <b-col sm="12" md="8" lg="6" xl="4">
+     <b-col sm="12" md="8" lg="6" xl="4">
         <center>
-          <img :src="showImage" class="thumbnail" alt="Цветочки" />
+          <b-img thumbnail :src="showImage" alt="Цветочки" />
         </center>
       </b-col>
     </b-row>
     <b-row align-h="center">
-      <!--<div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 text-center">-->
       <b-col sm="12" md="8" lg="6" xl="4">
         <p class="text-center">
           Пожалуйста заполните следующие поля для входа:
         </p>
-        <form @submit.prevent="login">
-          <div :class="{ 'form-group': true, 'has-error': usernameFieldIsValid === false, 'has-success': usernameFieldIsValid === true }">
-            <input type="text" class="form-control" v-model.trim="username" placeholder="введите ваш логин..." />
-          </div>
-          <div :class="{ 'form-group': true, 'has-error': passwordFieldIsValid === false, 'has-success': passwordFieldIsValid === true }">
-            <input type="password" class="form-control" v-model.trim="password" placeholder="введите ваш пароль..." />
-          </div>
-          <div class="form-group">
+        <b-form @submit.prevent="login">
+          <b-form-group label="Ваш логин:" label-for="form-login-username" :state="userNameInput">
+            <b-form-input
+              id="form-login-username"
+              placeholder="введите ваш логин..."
+              :state="userNameInput"
+              type="text"
+              :value="username"
+              v-on:change="handleInput($event.target.value, 'username')"
+            />
+          </b-form-group>
+          <b-form-group label="Ваш пароль:" label-for="form-login-password" :state="passwordInput">
+            <b-form-input
+              id="form-login-password"
+              placeholder="введите ваш пароль..."
+              :state="passwordInput"
+              type="password"
+              :value="password"
+              v-on:change="handleInput($event.target.value, 'password')"
+            />
+          </b-form-group>
+          <b-form-group>
             <div class="text-center">
-              <button class="btn btn-primary" name="login-button">Вход</button>
+              <b-button size="lg" type="submit" variant="primary">Вход</b-button>
             </div>
-          </div>
-        </form>
+          </b-form-group>
+        </b-form>
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
+import bButton from "bootstrap-vue/es/components/button/button";
+import bCol from "bootstrap-vue/es/components/layout/col";
+import bForm from "bootstrap-vue/es/components/form/form";
+import bFormGroup from "bootstrap-vue/es/components/form-group/form-group";
+import bFormInput from "bootstrap-vue/es/components/form-input/form-input";
+import bImage from "bootstrap-vue/es/components/image/img";
+import bRow from "bootstrap-vue/es/components/layout/row";
 import { getRandomInt } from "../utils";
 import axios from "axios";
 
@@ -47,18 +66,35 @@ export default {
     return {
       username: "",
       password: "",
-      usernameFieldIsValid: null,
-      passwordFieldIsValid: null,
-      error: false
+      firstInput: 0
     };
+  },
+  components: {
+    "b-button": bButton,
+    "b-col": bCol,
+    "b-form": bForm,
+    "b-form-group": bFormGroup,
+    "b-form-input": bFormInput,
+    "b-img": bImage,
+    "b-row": bRow
   },
   computed: {
     showImage() {
       const number = getRandomInt(1, 101);
       return `/images/flowers/${number}.jpg`;
+    },
+    userNameInput() {
+      return this.username !== "";
+    },
+    passwordInput() {
+      return this.password !== "";
     }
   },
   methods: {
+    handleInput(value, key) {
+      console.log(value, key);
+      this[key] = value;
+    },
     login() {
       if (this.validate()) {
         axios
