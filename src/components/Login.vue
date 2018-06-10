@@ -53,7 +53,6 @@ import bFormInput from "bootstrap-vue/es/components/form-input/form-input";
 import bImage from "bootstrap-vue/es/components/image/img";
 import bRow from "bootstrap-vue/es/components/layout/row";
 import { getRandomInt } from "../utils";
-import axios from "axios";
 
 export default {
   props: {
@@ -99,58 +98,22 @@ export default {
     },
     login() {
       if (this.validate()) {
-        axios
-          .get("/site/csrf")
-          .then(response => {
-            let data = Object.assign({}, response.data);
-            data.LoginForm = {
-              username: this.username,
-              password: this.password
-            };
-            console.log(data);
-            axios
-              .post("/site/login", JSON.stringify(data), {
-                headers: { "Content-Type": "application/json" }
-              })
-              .then(response => {
-                if (response.data.status === true) {
-                  this.notify("success", response.data.text);
-                  window.location.replace(response.data.url);
-                } else {
-                  this.notify("error", response.data.text);
-                  this.error = true;
-                }
-              })
-              .catch(err => {
-                this.notify(
-                  "error",
-                  err.message ? err.message : "Произошла ошибка!"
-                );
-                this.error = true;
-              });
-          })
-          .catch(err => {
-            this.notify(
-              "error",
-              err.message ? err.message : "Произошла ошибка!"
-            );
-            this.error = true;
-          });
+        this.$store.dispatch({
+          type: "getLogin",
+          credentials: {
+            username: this.username,
+            password: this.password
+          }
+        });
       }
     },
     validate() {
       let result = true;
-      if (this.username) {
-        this.usernameFieldIsValid = true;
-      } else {
-        this.usernameFieldIsValid = false;
+      if (!this.username) {
         result = false;
         this.notify("error", "Поле логин должно быть заполнено!");
       }
-      if (this.password) {
-        this.passwordFieldIsValid = true;
-      } else {
-        this.passwordFieldIsValid = false;
+      if (!this.password) {
         result = false;
         this.notify("error", "Поле пароль должно быть заполнено!");
       }
