@@ -1,13 +1,15 @@
 <template>
-  <nav id="top-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top-nav-collapse">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <b-navbar fixed="top" toggleable="md" type="light" variant="light">
+  <!--<nav id="top-nav" class="navbar navbar-expand-lg navbar-light bg-light">-->
+    <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <menu-component :links="links" :loading="loading" @site-logout="logout" />
-  </nav>
+  <!--</nav>-->
+  </b-navbar>
 </template>
 
 <script>
+import bNavbar from "bootstrap-vue/es/components/navbar/navbar";
+import bNavbarToggle from "bootstrap-vue/es/components/navbar/navbar-toggle";
 import axios from "axios";
 import Menu from "./Menu";
 
@@ -28,6 +30,8 @@ export default {
     this.getNavLinks();
   },
   components: {
+    "b-navbar": bNavbar,
+    "b-navbar-toggle": bNavbarToggle,
     "menu-component": Menu
   },
   methods: {
