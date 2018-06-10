@@ -23,19 +23,23 @@ export default new Vuex.Store({
     user: {
       id: 0,
       loggedIn: false,
-      userName: "guest",
       role: {
         id: 0,
         name: "guest"
-      }
+      },
+      homeUrl: "/",
+      userName: "guest"
     }
   },
   getters: {
-    isGuest(state) {
-      return !state.user.loggedIn;
-    },
-    isLoaded(state) {
+    appLoaded(state) {
       return state.app.isLoaded;
+    },
+    userHomeUrl(state) {
+      return state.user.homeUrl;
+    },
+    userIsGuest(state) {
+      return !state.user.loggedIn;
     }
   },
   mutations: {
@@ -53,8 +57,9 @@ export default new Vuex.Store({
             const user = {
               id: response.data.id,
               loggedIn: response.data.loggedIn,
-              userName: response.data.userName,
-              role: response.data.role
+              role: response.data.role,
+              homeUrl: response.data.url,
+              userName: response.data.userName
             };
             commit("updateUserState", user);
           } else {
@@ -84,12 +89,12 @@ export default new Vuex.Store({
                 const user = {
                   id: response.data.id,
                   loggedIn: response.data.loggedIn,
-                  userName: response.data.userName,
-                  role: response.data.role
+                  role: response.data.role,
+                  homeUrl: response.data.url,
+                  userName: response.data.userName
                 };
                 notify("success", response.data.text);
                 commit("updateUserState", user);
-                //this.$router.push(response.data.url);
               } else {
                 notify("error", response.data.text);
               }
@@ -103,6 +108,38 @@ export default new Vuex.Store({
         })
         .catch(err => {
           this.notify("error", err.message ? err.message : "Произошла ошибка!");
+        });
+    },
+    getLogout({ commit }) {
+      axios
+        .get("/site/csrf")
+        .then(response => {
+          let data = { ...response.data };
+          axios
+            .post("/site/logout", JSON.stringify(data), {
+              headers: { "Content-Type": "application/json" }
+            })
+            .then(response => {
+              if (response.data.status === true) {
+                const user = {
+                  id: response.data.id,
+                  loggedIn: response.data.loggedIn,
+                  role: response.data.role,
+                  homeUrl: response.data.url,
+                  userName: response.data.userName
+                };
+                notify("success", response.data.text);
+                commit("updateUserState", user);
+              } else {
+                notify("error", response.data.text);
+              }
+            })
+            .catch(err => {
+              notify("error", err.message ? err.message : "Произошла ошибка!");
+            });
+        })
+        .catch(err => {
+          notify("error", err.message ? err.message : "Произошла ошибка!");
         });
     }
   }
