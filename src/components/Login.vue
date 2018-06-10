@@ -20,7 +20,7 @@
               :state="userNameInput"
               type="text"
               :value="username"
-              v-on:change="handleInput($event.target.value, 'username')"
+              v-on:input="(e) => handleInput(e, 'username')"
             />
           </b-form-group>
           <b-form-group label="Ваш пароль:" label-for="form-login-password" :state="passwordInput">
@@ -30,7 +30,7 @@
               :state="passwordInput"
               type="password"
               :value="password"
-              v-on:change="handleInput($event.target.value, 'password')"
+              v-on:input="(e) => handleInput(e, 'password')"
             />
           </b-form-group>
           <b-form-group>
@@ -66,7 +66,7 @@ export default {
     return {
       username: "",
       password: "",
-      firstInput: 0
+      firstInput: false
     };
   },
   components: {
@@ -84,16 +84,18 @@ export default {
       return `/images/flowers/${number}.jpg`;
     },
     userNameInput() {
-      return this.username !== "";
+      return this.username !== "" ? true : this.firstInput ? false : null;
     },
     passwordInput() {
-      return this.password !== "";
+      return this.password !== "" ? true : this.firstInput ? false : null;
     }
   },
   methods: {
     handleInput(value, key) {
-      console.log(value, key);
       this[key] = value;
+      if (!this.firstInput) {
+        this.firstInput = true;
+      }
     },
     login() {
       if (this.validate()) {
