@@ -1,19 +1,23 @@
 <template>
   <b-collapse is-nav id="nav_collapse">
-    <ul id="nav-links" class="navbar-nav mr-auto">
-      <li class="nav-item" v-if="loading">
+    <b-navbar-nav>
+      <b-nav-text v-if="loading">
         <span class="navbar-text">Загружаем панель навигации...</span>
-      </li>
-      <li class="nav-item" v-for="link in links" :key="link.id">
+      </b-nav-text>
+      <b-nav-item v-for="link in links" :key="link.id" v-if="!loading">
         <router-link  class="nav-link" :title="link.title" :to="link.url"><span :class="link.classes"></span></router-link>
-      </li>
-      <li class="nav-item"><a class="nav-link" href="#" @click.stop="handleLogout"><span aria-hidden="true" class="fa fa-sign-out" title="Выход"></span></a></li>
-    </ul>
+      </b-nav-item>
+      <b-nav-item><a class="nav-link" href="#" @click.stop="getLogout" v-if="!loading"><span aria-hidden="true" class="fa fa-sign-out" title="Выход"></span></a></b-nav-item>
+    </b-navbar-nav>
   </b-collapse>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import bCollapse from "bootstrap-vue/es/components/collapse/collapse";
+import bNavbarNav from "bootstrap-vue/es/components/navbar/navbar-nav";
+import bNavItem from "bootstrap-vue/es/components/nav/nav-item";
+import bNavText from "bootstrap-vue/es/components/nav/nav-text";
 
 export default {
   props: {
@@ -27,12 +31,13 @@ export default {
     }
   },
   components: {
-    "b-collapse": bCollapse
+    "b-collapse": bCollapse,
+    "b-navbar-nav": bNavbarNav,
+    "b-nav-item": bNavItem,
+    "b-nav-text": bNavText
   },
   methods: {
-    handleLogout() {
-      this.$emit("site-logout");
-    }
+    ...mapActions(["getLogout"])
   }
 };
 </script>
