@@ -15,25 +15,26 @@ import "./app.css";
 
 Vue.config.productionTip = false;
 
-router.beforeEach((to, from, next) => {
-  if (store.getters.isGuest && to.path !== "/login") {
-    next("/login");
-  }
-  if (!store.getters.isGuest && to.path === "/login") {
-    next("/");
-  }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   if (store.getters.isLoaded) {
+//     if (store.getters.isGuest && to.path !== "/login") {
+//       next("/login");
+//     }
+//     if (!store.getters.isGuest && to.path === "/login") {
+//       next("/");
+//     }
+//   } else {
+//     next(false);
+//   }
+// });
 
 new Vue({
   computed: {
-    ...mapGetters(["isLoaded"])
+    ...mapGetters(["appLoaded", "userHomeUrl", "userIsGuest"])
   },
   created() {
     this.getUserState();
   },
-  router,
-  store,
   methods: {
     ...mapActions(["getUserState"]),
     notify(type, text) {
@@ -47,7 +48,7 @@ new Vue({
     }
   },
   render(h) {
-    if (this.isLoaded) {
+    if (this.appLoaded) {
       return h(App, {
         props: {
           notify: this.notify
@@ -55,6 +56,26 @@ new Vue({
       });
     } else {
       return h(Loading);
+    }
+  },
+  router,
+  store,
+  watch: {
+    appLoaded(value) {
+      if (value && this.userIsGuest && this.$route.path !== "/login") {
+        this.$router.push("/login");
+      }
+      if (value && !this.userIsGuest && this.$route.path === "/login") {
+        this.$router.push(this.userHomeUrl);
+      }
+    },
+    userIsGuest(value) {
+      if (value && this.appLoaded && this.$route.path !== "/login") {
+        this.$router.push("/login");
+      }
+      if (!value && this.appLoaded && this.$route.path === "/login") {
+        this.$router.push(this.userHomeUrl);
+      }
     }
   }
 }).$mount("#app");
