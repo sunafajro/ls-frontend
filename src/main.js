@@ -1,21 +1,21 @@
 import Vue from "vue";
 import Noty from "noty";
 import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import App from "./App.vue";
 import Loading from "./components/Loading.vue";
 import router from "./router";
 import store from "./store";
-import "./app.css";
 import "font-awesome/css/font-awesome.css";
 import "noty/lib/themes/bootstrap-v4.css";
 import "noty/lib/noty.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import "./app.css";
 
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-  console.log(store.getters.isGuest);
   if (store.getters.isGuest && to.path !== "/login") {
     next("/login");
   }
@@ -27,9 +27,7 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   computed: {
-    isLoaded() {
-      return this.$store.getters.isLoaded;
-    }
+    ...mapGetters(["isLoaded"])
   },
   created() {
     this.getUserState();
