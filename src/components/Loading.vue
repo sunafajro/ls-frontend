@@ -1,3 +1,3 @@
 <template>
-  <div>Приложение загружается...</div>
+  <b-alert show variant="warning">Загрузка приложения...</b-alert>
 </template>
