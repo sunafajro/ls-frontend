@@ -1,7 +1,9 @@
 <template>
-  <div id="app">
+  <div>
     <nav-component v-if="!isGuest" :notify="notify"/>
-    <router-view :notify="notify" />
+    <b-container fluid>
+      <router-view :notify="notify" />
+    </b-container>
   </div>
 </template>
 

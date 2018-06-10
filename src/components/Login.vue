@@ -1,28 +1,34 @@
 <template>
   <div>
-    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">
-      <center>
-        <img :src="showImage" class="thumbnail" alt="Цветочки" />
-      </center>
-    </div>
-    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 text-center">
-      <p class="text-center">
-        Пожалуйста заполните следующие поля для входа:
-      </p>
-      <form @submit.prevent="login">
-        <div :class="{ 'form-group': true, 'has-error': usernameFieldIsValid === false, 'has-success': usernameFieldIsValid === true }">
-          <input type="text" class="form-control" v-model.trim="username" placeholder="введите ваш логин..." />
-        </div>
-        <div :class="{ 'form-group': true, 'has-error': passwordFieldIsValid === false, 'has-success': passwordFieldIsValid === true }">
-          <input type="password" class="form-control" v-model.trim="password" placeholder="введите ваш пароль..." />
-        </div>
-        <div class="form-group">
-          <div class="text-center">
-            <button class="btn btn-primary" name="login-button">Вход</button>
+    <b-row align-h="center">
+      <!--<div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">-->
+      <b-col sm="12" md="8" lg="6" xl="4">
+        <center>
+          <img :src="showImage" class="thumbnail" alt="Цветочки" />
+        </center>
+      </b-col>
+    </b-row>
+    <b-row align-h="center">
+      <!--<div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 text-center">-->
+      <b-col sm="12" md="8" lg="6" xl="4">
+        <p class="text-center">
+          Пожалуйста заполните следующие поля для входа:
+        </p>
+        <form @submit.prevent="login">
+          <div :class="{ 'form-group': true, 'has-error': usernameFieldIsValid === false, 'has-success': usernameFieldIsValid === true }">
+            <input type="text" class="form-control" v-model.trim="username" placeholder="введите ваш логин..." />
           </div>
-        </div>
-      </form>
-    </div>
+          <div :class="{ 'form-group': true, 'has-error': passwordFieldIsValid === false, 'has-success': passwordFieldIsValid === true }">
+            <input type="password" class="form-control" v-model.trim="password" placeholder="введите ваш пароль..." />
+          </div>
+          <div class="form-group">
+            <div class="text-center">
+              <button class="btn btn-primary" name="login-button">Вход</button>
+            </div>
+          </div>
+        </form>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
