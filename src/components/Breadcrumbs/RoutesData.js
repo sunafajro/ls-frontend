@@ -7,13 +7,21 @@ export const RoutesData = {
         title: "Вход",
         path: "/login"
       },
+      admin: {
+        title: "Администрирование",
+        path: "/admin"
+      },
       news: {
         title: "Новости",
         path: "/news"
       },
-      message: {
+      kaslibro: {
+        title: "Расходы",
+        path: "/kaslibro"
+      },
+      messages: {
         title: "Сообщения",
-        path: "/message",
+        path: "/messages",
         children: {
           create: {
             title: "Создать сообщение",
