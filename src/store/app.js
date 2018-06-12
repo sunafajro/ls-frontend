@@ -24,6 +24,9 @@ export const appModule = {
     userHomeUrl(state) {
       return state.user.homeUrl;
     },
+    userInfo(state) {
+      return state.user;
+    },
     userIsGuest(state) {
       return !state.user.loggedIn;
     }
