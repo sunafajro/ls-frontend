@@ -4,7 +4,7 @@
       <info-component :notify="notify" />
       <div v-if="access.create">
         <h4>Действия:</h4>
-        <b-button variant="success" @click="openModal">
+        <b-button block="true" variant="success" @click="openModal">
           <span class="fa fa-plus" aria-hidden="true"></span> Добавить
         </b-button>
       </div>
