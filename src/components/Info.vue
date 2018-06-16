@@ -7,7 +7,7 @@
 
 <script>
 import bCard from "bootstrap-vue/es/components/card/card";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["userInfo"])
@@ -15,5 +15,5 @@ export default {
   components: {
     "b-card": bCard
   }
-}
+};
 </script>
