@@ -1,16 +1,14 @@
 <template>
   <b-navbar fixed="top" toggleable="md" type="light" variant="light">
-  <!--<nav id="top-nav" class="navbar navbar-expand-lg navbar-light bg-light">-->
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-    <menu-component :links="links" :loading="loading" />
-  <!--</nav>-->
+    <menu-component :links="navigationLinks" />
   </b-navbar>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import bNavbar from "bootstrap-vue/es/components/navbar/navbar";
 import bNavbarToggle from "bootstrap-vue/es/components/navbar/navbar-toggle";
-import axios from "axios";
 import Menu from "./Menu";
 
 export default {
@@ -20,14 +18,11 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      loading: true,
-      links: []
-    };
+  computed: {
+    ...mapGetters(["navigationLinks"])
   },
   created() {
-    this.getNavLinks();
+    this.getNavigationLinks();
   },
   components: {
     "b-navbar": bNavbar,
@@ -35,30 +30,7 @@ export default {
     "menu-component": Menu
   },
   methods: {
-    getNavLinks() {
-      axios
-        .get("/site/csrf")
-        .then(response => {
-          let data = { ...response.data };
-          axios
-            .post("/site/nav", JSON.stringify(data), {
-              headers: { "Content-Type": "application/json" }
-            })
-            .then(response => {
-              this.links = response.data.navElements;
-              this.loading = false;
-            })
-            .catch(err => {
-              this.notify(
-                "error",
-                err.message ? err.message : "Произошла ошибка!"
-              );
-            });
-        })
-        .catch(err => {
-          this.notify("error", err.message ? err.message : "Произошла ошибка!");
-        });
-    }
+    ...mapActions(["getNavigationLinks"])
   }
 };
 </script>

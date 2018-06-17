@@ -1,38 +1,32 @@
 <template>
-  <b-breadcrumb :items="getItems"/>
+  <b-breadcrumb :items="links"/>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import bBreadcrumb from "bootstrap-vue/es/components/breadcrumb/breadcrumb";
-import { RoutesData } from "./RoutesData.js";
 
 export default {
   props: {
     path: {
-      type: Array,
+      type: String,
       required: true
     }
   },
   computed: {
-    getItems() {
-      const bc = [];
-      if (RoutesData[this.path[0]] && this.path[0]) {
-        bc.push({
-          text: RoutesData[this.path[0]].title,
-          to: RoutesData[this.path[0]].path
-        });
-        if (RoutesData[this.path[0]].children && this.path[1]) {
-          bc.push({
-            text: RoutesData[this.path[0]].children[this.path[1]].title,
-            to: RoutesData[this.path[0]].children[this.path[1]].path
-          });
-        }
-      }
-      return bc;
+    ...mapGetters(["getBreadcrumbByRoute"]),
+    links() {
+      return this.getBreadcrumbByRoute(this.path);
     }
+  },
+  created() {
+    this.getBreadcrumbsLinks();
   },
   components: {
     "b-breadcrumb": bBreadcrumb
+  },
+  methods: {
+    ...mapActions(["getBreadcrumbsLinks"])
   }
 };
 </script>
