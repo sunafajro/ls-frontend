@@ -24,9 +24,7 @@ export default {
   computed: {
     ...mapGetters(["userIsGuest"]),
     getPath() {
-      const path = this.$route.path.split("/");
-      path[0] = "home";
-      return path;
+      return this.$route.path;
     }
   },
   components: {
