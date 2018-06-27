@@ -52,11 +52,11 @@ export const appModule = {
             };
             commit("updateUserState", user);
           } else {
-            console.log("ошибка получения состояния");
+            notify("ошибка получения состояния");
           }
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
+          notify("ошибка получения состояния");
         });
     },
     getLogin({ commit }, payload) {
