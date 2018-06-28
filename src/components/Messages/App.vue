@@ -9,15 +9,15 @@
         </b-button>
       </div>
     </b-col>
-    <b-col sm="10" md="2" lg="2" xl="2">
+    <b-col sm="12" md="10" lg="10" xl="10">
       <list-component :messages="messages" />
     </b-col>
   </b-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import moment from "moment";
+import { mapActions, mapGetters } from "vuex";
 import bButton from "bootstrap-vue/es/components/button/button";
 import bCol from "bootstrap-vue/es/components/layout/col";
 import bRow from "bootstrap-vue/es/components/layout/row";

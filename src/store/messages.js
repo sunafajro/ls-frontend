@@ -23,12 +23,12 @@ export const messagesModule = {
     }
   },
   mutations: {
-    updateMessages(state, data) {
-      state.access = data.access;
-      state.messages = data.messages;
+    updateMessages(state, { access, messages }) {
+      state.access = access;
+      state.messages = messages;
     },
-    updateTargets(state, data) {
-      state.targets = data.targets;
+    updateTargets(state, { targets }) {
+      state.targets = targets;
     }
   },
   actions: {
